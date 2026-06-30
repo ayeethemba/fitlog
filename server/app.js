@@ -1,9 +1,9 @@
 require('dotenv').config();
-console.log('JWT_SECRET: ', process.env.JWT_SECRET)
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const db = require('./db');
+const requireAuth = require('./middleware/requireAuth')
 
 
 const app = express();
@@ -12,6 +12,10 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+
+app.get('/api/protected', requireAuth, (req, res) => {
+    res.json({message: `Hello user ${req.user.id}`})
+})
 
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
