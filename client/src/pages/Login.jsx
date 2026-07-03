@@ -1,5 +1,5 @@
 import api from "../utils/api.js";
-  import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Login() {
@@ -26,6 +26,8 @@ function Login() {
         <input
           value={email}
           id="email"
+          type="email"
+          placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         ></input>
 
@@ -34,6 +36,8 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           id="password"
+          type='password'
+          placeholder="Password"
         ></input>
         <button type="submit">Login</button>
       </form>
