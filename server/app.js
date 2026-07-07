@@ -20,6 +20,10 @@ app.get('/api/protected', requireAuth, (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
+const workoutRoutes = require('./routes/workoutRoutes');
+app.use('/api/workouts', workoutRoutes);
+
+
 // Test route
 app.get('/api/health', (req, res) => {
     res.json({ status: 'Server is running' });
