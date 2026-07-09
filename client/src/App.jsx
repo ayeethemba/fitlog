@@ -3,6 +3,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import PrivateRoute from "./components/PrivateRoute.jsx"
 import LogWorkout  from './pages/LogWorkout.jsx';
+import WorkoutHistory from './pages/WorkoutHistory.jsx';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -15,6 +16,9 @@ function App() {
         </PrivateRoute>} />
         <Route path="/log-workout" element={<PrivateRoute>
           <LogWorkout />
+        </PrivateRoute>} />
+        <Route path="/workout-history" element={<PrivateRoute>
+          <WorkoutHistory />
         </PrivateRoute>} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
