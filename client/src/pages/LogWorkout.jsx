@@ -16,6 +16,7 @@ function LogWorkout() {
             try {
                 const e = await api.get('/api/exercises');
                 setExerciseList(e.data);
+                setSelection(prev => ({ ...prev, exercise_id: e.data[0].id }));
             } catch (error) {
                 console.log(error)
             }
@@ -23,10 +24,10 @@ function LogWorkout() {
         fetchExercises();
     }, []);
 
-    function handleAdd () {
+    function handleAdd() {
         console.log(selection);
-        if (selection.reps  && selection.exercise_id && selection.sets && selection.weight) {
-       setExercises([...exercises, selection]);
+        if (selection.reps && selection.exercise_id && selection.sets && selection.weight) {
+            setExercises([...exercises, selection]);
         }
         else {
             alert("Select Fields Before adding")
@@ -34,9 +35,14 @@ function LogWorkout() {
     }
 
     async function handleSubmit(e) {
-        e.preventDefault(); 
+        e.preventDefault();
+        const today = new Date().toLocaleDateString('en-CA');
+        if (date > today) {
+            alert("You can't log a workout in the future");
+            return;
+        }
         try {
-            const response = await api.post('/api/workouts', {date, notes: note, exercises});
+            const response = await api.post('/api/workouts', { date, notes: note, exercises });
 
         } catch (err) {
             console.log(err)
@@ -58,11 +64,11 @@ function LogWorkout() {
                 <input id="notes" type="text" placeholder="Notes"
                     value={note} onChange={(e) => setNote(e.target.value)}></input>
 
-          {/* Exercise Dropdown */}
+                {/* Exercise Dropdown */}
 
                 <label htmlFor="exercises">Select Exercise: </label>
                 <select id="exercises" name="exercises" value={selection.exercise_id}
-                onChange={(e) => setSelection({...selection, exercise_id: e.target.value})}>
+                    onChange={(e) => setSelection({ ...selection, exercise_id: e.target.value })}>
                     {exerciseList.map((exercise) => (
                         <option key={exercise.id} value={exercise.id}>
                             {exercise.name}
@@ -72,14 +78,14 @@ function LogWorkout() {
 
 
                 <input id="sets" placeholder="Sets" type='number'
-                    value={selection.sets} onChange={(e) => setSelection({...selection, sets: e.target.value})}></input>
+                    value={selection.sets} onChange={(e) => setSelection({ ...selection, sets: e.target.value })}></input>
 
                 <input id="reps" placeholder="Reps" type="number"
-                    value={selection.reps} onChange={(e) => setSelection({...selection, reps: e.target.value})}></input>
+                    value={selection.reps} onChange={(e) => setSelection({ ...selection, reps: e.target.value })}></input>
 
 
                 <input id="weight" placeholder="Weight" type="number"
-                    value={selection.weight} onChange={(e) => setSelection({...selection, weight: e.target.value})}></input>
+                    value={selection.weight} onChange={(e) => setSelection({ ...selection, weight: e.target.value })}></input>
 
 
 

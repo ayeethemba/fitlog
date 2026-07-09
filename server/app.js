@@ -26,6 +26,9 @@ app.use('/api/workouts', workoutRoutes);
 const exercisesRoutes = require('./routes/exerciseRoutes');
 app.use('/api/exercises', exercisesRoutes);
 
+const statRoutes = require('./routes/statRoutes');
+app.use('/api/stats', statRoutes)
+
 
 // Test route
 app.get('/api/health', (req, res) => {
