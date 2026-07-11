@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import NavBar from "../components/NavBar.jsx";
 import api from '../utils/api.js';
 
 function Dashboard() {
@@ -18,16 +19,14 @@ function Dashboard() {
         fetchStats();
     }, [])
 
-    function handleLogout() {
-        localStorage.removeItem("token");
-        navigate("/login");
-    }
-    
+
     return (
         <div>
+            <NavBar />
             <h1>Dashboard</h1>
             <p>Welcome to Fitlog!</p>
-            <button onClick={handleLogout}>Logout</button>
+            
+            
             
             <h2>Your stats: </h2>
             <p>Total Workouts: {stats.total_workouts}</p>

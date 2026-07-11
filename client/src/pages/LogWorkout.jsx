@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import NavBar from "../components/NavBar";
 import api from '../utils/api';
 
 
@@ -52,6 +53,7 @@ function LogWorkout() {
 
     return (
         <div>
+            <NavBar />
             <h2>Log a Workout!</h2>
             <form onSubmit={handleSubmit}>
 

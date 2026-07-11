@@ -1,4 +1,4 @@
-
+import NavBar from "../components/NavBar";
 import { useEffect, useState } from "react";
 import api from '../utils/api';
 
@@ -31,6 +31,7 @@ function WorkoutHistory() {
 
      return (
         <div>
+            <NavBar />
             <h1>Your Workout History</h1>
         
             {Object.entries(groupWorkouts(workoutData)).map(([id, workout]) => (
