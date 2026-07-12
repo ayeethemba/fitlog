@@ -14,6 +14,7 @@ function Signup() {
         try {
             const response = await api.post("/api/auth/register", {name: `${firstName} ${lastName}`, email, password});
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("name", response.data.user.name);
             navigate("/dashboard");
         } catch(err) {
             console.log(err)
