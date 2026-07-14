@@ -19,7 +19,7 @@ function NavBar() {
                 <Link to="/dashboard" className="text-gray-400 hover:text-white text-sm uppercase tracking-wider transition-colors">Dashboard</Link>
                 <Link to="/log-workout" className="text-gray-400 hover:text-white text-sm uppercase tracking-wider transition-colors">Log Workout</Link>
                 <Link to="/workout-history" className="text-gray-400 hover:text-white text-sm uppercase tracking-wider transition-colors">History</Link>
-                <button onClick={handleLogout} className="bg-blue-400 text-gray-950 px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-green-300 transition-colors">Logout</button>
+                <button onClick={handleLogout} className="bg-blue-400 text-gray-950 px-4 py-2 text-sm font-bold uppercase tracking-wider hover:bg-green-300 transition-colors cursor-pointer">Logout</button>
                 
             </div>
         </nav>
