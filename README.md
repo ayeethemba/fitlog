@@ -5,6 +5,7 @@ A full-stack fitness tracker. Log workouts, track exercises, and watch your stre
 Built with **React 19 + Vite + Tailwind CSS 4** on the frontend and **Node.js + Express 5 + PostgreSQL** on the backend, with JWT authentication.
 
 <!-- TODO: replace with real screenshots -->
+! [My Image](https://i.gyazo.com/4ed4ba3f3afb41fb1f292c36a30d8ea1.png)
 <!-- ![Dashboard](docs/screenshots/dashboard.png) -->
 <!-- ![Log Workout](docs/screenshots/log-workout.png) -->
 
