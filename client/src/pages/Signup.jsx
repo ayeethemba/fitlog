@@ -30,7 +30,7 @@ function Signup() {
                 <h1 className="text-4xl font-black uppercase tracking-tight pb-4 border-b-3 border-b-purple-400">Sign Up Today!</h1>
                 <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center text-2xl font-black pt-4" onSubmit={handleSubmit}>
 
-                    <label htmlFor="firstName">First Name:</label>
+                    <label htmlFor="firstName" className="hidden sm:block">First Name:</label>
                     <input
                         className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
                         id="firstName"
@@ -40,7 +40,7 @@ function Signup() {
                         onChange={(e) => setFirstName(e.target.value)}
                     />
 
-                    <label htmlFor="lastName">Last Name:</label>
+                    <label htmlFor="lastName" className="hidden sm:block">Last Name:</label>
                     <input
                         className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
                         id="lastName"
@@ -50,7 +50,7 @@ function Signup() {
                         onChange={(e) => setLastName(e.target.value)}
                     />
 
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email" className="hidden sm:block">Email:</label>
                     <input
                         className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
                         id="email"
@@ -60,7 +60,7 @@ function Signup() {
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password" className="hidden sm:block">Password:</label>
                     <input
                         className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
                         id="password"

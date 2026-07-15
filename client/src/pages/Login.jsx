@@ -30,7 +30,7 @@ function Login() {
       <div className="max-w-lg mx-auto px-6 sm:px-12 py-12 border border-blue-400 bg-gray-800">
         <h1 className="text-4xl font-black uppercase tracking-tight pb-4 border-b-3 border-b-purple-400">Welcome to Fitlog!</h1>
         <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center text-2xl font-black pt-4" onSubmit={handleSubmit}>
-          <label htmlFor="email">Email: </label>
+          <label htmlFor="email" className="hidden sm:block">Email: </label>
           <input
             className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
             value={email}
@@ -40,7 +40,7 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
           ></input>
 
-          <label htmlFor="password">Password: </label>
+          <label htmlFor="password" className="hidden sm:block">Password: </label>
           <input
             className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
             value={password}
