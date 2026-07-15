@@ -20,7 +20,9 @@ function LogWorkout() {
             try {
                 const e = await api.get('/api/exercises');
                 setExerciseList(e.data);
-                setSelection(prev => ({ ...prev, exercise_id: e.data[0].id }));
+                if (e.data.length > 0) {
+                    setSelection(prev => ({ ...prev, exercise_id: e.data[0].id }));
+                }
             } catch (error) {
                 console.log(error)
             }

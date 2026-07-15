@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
+import { isTokenValid, clearSession } from "../utils/auth.js";
 
-function PrivateRoute({children}) {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        return <Navigate to="/login" />
+function PrivateRoute({ children }) {
+    if (!isTokenValid()) {
+        clearSession();
+        return <Navigate to="/login" replace />;
     }
 
     return children;

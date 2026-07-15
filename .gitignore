@@ -1,3 +1,10 @@
 node_modules
 .env
-client/dist  
+client/dist
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Local DB session files
+*.session.sql

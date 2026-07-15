@@ -1,13 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
+import { clearSession } from '../utils/auth.js';
 
 function NavBar() {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
     function handleLogout() {
-        localStorage.removeItem("token");
+        clearSession();
         navigate("/login");
     }
 

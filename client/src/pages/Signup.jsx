@@ -1,8 +1,13 @@
 import api from '../utils/api.js';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import bg from '../assets/landingpage.png';
 import Footer from '../components/Footer.jsx';
+import { isTokenValid } from '../utils/auth.js';
+
+const inputClass =
+    "w-full bg-gray-950/60 border border-gray-800 rounded px-4 py-2.5 text-white placeholder-gray-600 outline-none focus:border-purple-400 transition-colors";
+const labelClass = "block text-xs uppercase tracking-widest text-gray-400 mb-1.5";
 
 function Signup() {
     const navigate = useNavigate();
@@ -10,76 +15,152 @@ function Signup() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    if (isTokenValid()) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if (password.length < 8) {
+            setError("Password must be at least 8 characters.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Passwords don't match.");
+            return;
+        }
+        setLoading(true);
+        setError("");
         try {
-            const response = await api.post("/api/auth/register", { name: `${firstName} ${lastName}`, email, password });
+            const response = await api.post("/api/auth/register", {
+                name: `${firstName.trim()} ${lastName.trim()}`.trim(),
+                email,
+                password,
+            });
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("name", response.data.user.name);
             navigate("/dashboard");
         } catch (err) {
             setError(err.response?.data?.error || "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
-        <div style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover' }} className="min-h-screen text-white flex flex-col justify-center">
-            <div className="max-w-lg mx-auto px-6 sm:px-12 py-12 border border-blue-400 bg-gray-800">
-                <h1 className="text-4xl font-black uppercase tracking-tight pb-4 border-b-3 border-b-purple-400">Sign Up Today!</h1>
-                <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center text-2xl font-black pt-4" onSubmit={handleSubmit}>
+        <div
+            style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            className="min-h-screen text-white flex flex-col"
+        >
+            <div className="min-h-screen flex flex-col bg-gray-950/80">
+                <main className="flex-grow flex items-center justify-center px-4 py-16">
+                    <div className="w-full max-w-md bg-gray-900/90 backdrop-blur border border-gray-800 border-l-4 border-l-purple-400 p-8 sm:p-10">
+                        <p className="text-blue-400 font-bold text-sm uppercase tracking-widest mb-2">FitLog</p>
+                        <h1 className="text-3xl font-black uppercase tracking-tight mb-8">Create your account</h1>
 
-                    <label htmlFor="firstName" className="hidden sm:block">First Name:</label>
-                    <input
-                        className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
-                        id="firstName"
-                        value={firstName}
-                        type="text"
-                        placeholder="First Name"
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
+                        <form className="space-y-5" onSubmit={handleSubmit}>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label htmlFor="firstName" className={labelClass}>First Name</label>
+                                    <input
+                                        className={inputClass}
+                                        id="firstName"
+                                        value={firstName}
+                                        type="text"
+                                        autoComplete="given-name"
+                                        placeholder="Themba"
+                                        required
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="lastName" className={labelClass}>Last Name</label>
+                                    <input
+                                        className={inputClass}
+                                        id="lastName"
+                                        value={lastName}
+                                        type="text"
+                                        autoComplete="family-name"
+                                        placeholder="Chika"
+                                        required
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                </div>
+                            </div>
 
-                    <label htmlFor="lastName" className="hidden sm:block">Last Name:</label>
-                    <input
-                        className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
-                        id="lastName"
-                        value={lastName}
-                        type="text"
-                        placeholder="Last Name"
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
+                            <div>
+                                <label htmlFor="email" className={labelClass}>Email</label>
+                                <input
+                                    className={inputClass}
+                                    id="email"
+                                    type="email"
+                                    value={email}
+                                    autoComplete="email"
+                                    placeholder="you@example.com"
+                                    required
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
 
-                    <label htmlFor="email" className="hidden sm:block">Email:</label>
-                    <input
-                        className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
-                        id="email"
-                        type="email"
-                        value={email}
-                        placeholder="Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+                            <div>
+                                <label htmlFor="password" className={labelClass}>Password</label>
+                                <input
+                                    className={inputClass}
+                                    id="password"
+                                    type="password"
+                                    value={password}
+                                    autoComplete="new-password"
+                                    placeholder="At least 8 characters"
+                                    minLength={8}
+                                    required
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
 
-                    <label htmlFor="password" className="hidden sm:block">Password:</label>
-                    <input
-                        className="bg-gray-700 border border-gray-600 px-4 py-2 rounded outline-none w-full"
-                        id="password"
-                        type="password"
-                        value={password}
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                            <div>
+                                <label htmlFor="confirmPassword" className={labelClass}>Confirm Password</label>
+                                <input
+                                    className={inputClass}
+                                    id="confirmPassword"
+                                    type="password"
+                                    value={confirmPassword}
+                                    autoComplete="new-password"
+                                    placeholder="Re-enter your password"
+                                    minLength={8}
+                                    required
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                            </div>
 
-                    {error && <p className="col-span-2 text-red-400 text-sm font-bold">{error}</p>}
-                    <div className="col-span-2 space-y-3 mt-2">
-                        <button type="submit" onClick={handleSubmit} className="px-6 py-2 bg-blue-400 rounded w-full hover:cursor-pointer hover:border-2 border-gray-50">Register</button>
-                        <p>Already have an account?</p>
-                        <Link className="px-4 py-2 inline-block bg-purple-400 rounded text-gray-950 font-bold" to="/login">Login</Link>
+                            {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-blue-400 text-gray-950 py-2.5 rounded font-bold uppercase tracking-wider hover:bg-blue-300 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                {loading ? "Creating account..." : "Register"}
+                            </button>
+                        </form>
+
+                        <div className="border-t border-gray-800 mt-8 pt-6 text-center">
+                            <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">Already have an account?</p>
+                            <Link
+                                to="/login"
+                                className="text-purple-400 hover:text-purple-300 font-bold uppercase tracking-wider text-sm transition-colors"
+                            >
+                                Login
+                            </Link>
+                        </div>
                     </div>
+                </main>
 
-                </form>
+                <Footer />
             </div>
-            <Footer />
         </div>
     );
 }

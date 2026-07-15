@@ -9,7 +9,10 @@ function Dashboard() {
     useEffect(() => {
         async function fetchStats() {
             try {
-                const data = await api.get('/api/stats');
+                // Send the user's local date so the streak is computed in their timezone
+                const data = await api.get('/api/stats', {
+                    params: { today: new Date().toLocaleDateString('en-CA') }
+                });
                 setStats(data.data);
             } catch (error) {
                 console.log(error);
@@ -26,8 +29,8 @@ function Dashboard() {
                 <h1 className="text-4xl font-black uppercase tracking-tight text-white mb-1">Dashboard</h1>
                 <p className="text-gray-500 text-sm uppercase tracking-widest mb-12">Welcome back {localStorage.getItem("name")}!</p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-l-4 border-purple-500">
-                    <div className="bg-gray-900 border border-gray-800 p-8">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div className="bg-gray-900 border border-gray-800 p-8 border-l-4 border-l-purple-500">
                         <p className="text-gray-500 text-xs uppercase tracking-widest mb-3">Total Workouts</p>
                         <p className="text-6xl font-black text-white">{stats.total_workouts ?? '—'}</p>
                     </div>
