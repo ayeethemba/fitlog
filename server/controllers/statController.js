@@ -30,6 +30,7 @@ const getStats = async (req, res) => {
         res.status(200).json({ total_workouts: totalWorkouts.rows[0].count, mostFrequent: mostFrequentName, streak: streak });
     } catch (error) {
         console.log(error);
+        res.status(500).json({ error: 'Server error' });
     }
 
 }

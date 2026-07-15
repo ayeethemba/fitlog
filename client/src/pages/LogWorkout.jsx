@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import api from '../utils/api';
 
 
@@ -12,6 +13,8 @@ function LogWorkout() {
     const [selection, setSelection] = useState({ exercise_id: "", sets: "", reps: "", weight: "", });
     const [exercises, setExercises] = useState([]);
     const [exerciseList, setExerciseList] = useState([]);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState("");
     useEffect(() => {
         async function fetchExercises() {
             try {
@@ -26,12 +29,12 @@ function LogWorkout() {
     }, []);
 
     function handleAdd() {
-        console.log(selection);
         if (selection.reps && selection.exercise_id && selection.sets && selection.weight) {
             setExercises([...exercises, selection]);
-        }
-        else {
-            alert("Select Fields Before adding")
+            setSelection(prev => ({ ...prev, sets: "", reps: "", weight: "" }));
+            setError("");
+        } else {
+            setError("Fill in all fields before adding an exercise.");
         }
     }
 
@@ -39,16 +42,29 @@ function LogWorkout() {
         e.preventDefault();
         const today = new Date().toLocaleDateString('en-CA');
         if (date > today) {
-            alert("You can't log a workout in the future");
+            setError("You can't log a workout in the future.");
+            return;
+        }
+        if (!date) {
+            setError("Please select a date.");
+            return;
+        }
+        if (exercises.length === 0) {
+            setError("Add at least one exercise before submitting.");
             return;
         }
         try {
-            const response = await api.post('/api/workouts', { date, notes: note, exercises });
-
+            await api.post('/api/workouts', { date, notes: note, exercises });
+            setSuccess(true);
+            setError("");
+            setDate("");
+            setNote("");
+            setExercises([]);
+            setSelection(prev => ({ ...prev, sets: "", reps: "", weight: "" }));
+            setTimeout(() => setSuccess(false), 4000);
         } catch (err) {
-            console.log(err)
+            setError(err.response?.data?.error || "Something went wrong. Please try again.");
         }
-
     }
 
     return (
@@ -57,7 +73,7 @@ function LogWorkout() {
 
 
 
-            <div className="max-w-lg mx-auto px-12 py-12">
+            <div className="max-w-lg mx-auto px-6 sm:px-12 py-12">
                 <div id="log-workout">
                     <h2 className="text-4xl font-black uppercase tracking-tight text-white mt-6 mb-6">Log a Workout!</h2>
                 </div>
@@ -101,19 +117,40 @@ function LogWorkout() {
                             value={selection.weight} onChange={(e) => setSelection({ ...selection, weight: e.target.value })}></input>
                     </div>
 
+                    {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
+
                     <div className="flex gap-4 mt-2">
                         <button className="bg-blue-400 text-gray-950 px-6 py-2 rounded font-bold uppercase tracking-wider hover:bg-blue-300 cursor-pointer transition-colors" type="button" onClick={handleAdd}>Add Exercise</button>
-                        <button className="bg-purple-400 text-gray-950 px-6 py-2 rounded font-bold uppercase tracking-wider hover:bg-purple-300 cursor-pointer transition-colors" type="submit">Submit</button>
+                        <button className="bg-purple-400 text-gray-950 px-6 py-2 rounded font-bold uppercase tracking-wider hover:bg-purple-300 cursor-pointer transition-colors" type="submit">Log Workout</button>
                     </div>
 
                 </form>
+
+                {exercises.length > 0 && (
+                    <div className="mt-8 border-l-4 border-l-blue-400 px-4 py-4">
+                        <h3 className="text-sm uppercase tracking-widest text-gray-400 font-black mb-4">Exercises Queued</h3>
+                        <ul className="space-y-2">
+                            {exercises.map((ex, i) => {
+                                const name = exerciseList.find(e => e.id == ex.exercise_id)?.name || "Unknown";
+                                return (
+                                    <li key={i} className="font-black text-white">
+                                        {name} — {ex.sets} sets x {ex.reps} reps @ {ex.weight}lbs
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                )}
+
+                {success && (
+                    <div className="mt-6 bg-green-400 text-gray-950 px-6 py-4 font-black uppercase tracking-wider">
+                        Workout logged successfully!
+                    </div>
+                )}
             </div>
+            <Footer />
         </div>
-
-
     )
-
-
 }
 
 export default LogWorkout;
