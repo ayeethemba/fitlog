@@ -2,13 +2,19 @@
 
 A full-stack fitness tracker. Log workouts, track exercises, and watch your streak grow.
 
-Built with **React 19 + Vite + Tailwind CSS 4** on the frontend and **Node.js + Express 5 + PostgreSQL** on the backend, with JWT authentication.
+**[Live Demo](https://fitlog-zeta-gray.vercel.app)** · Built with **React 19 + Vite + Tailwind CSS 4** on the frontend and **Node.js + Express 5 + PostgreSQL** on the backend, with JWT authentication.
 
 ## Screenshots
 
-| Dashboard | Log Workout |
-|-----------|-------------|
-| ![Dashboard with workout stats](assets/dashboard.png) | ![Log workout form](assets/logworkout.png) |
+<!-- TODO: capture two more shots and save as assets/login.png and assets/history.png,
+     then this 2x2 grid is complete. Login is the strongest visual (image background,
+     mobile-fixed card) so it leads. Until then, only dashboard + logworkout render. -->
+
+| Login | Dashboard |
+|-------|-----------|
+| ![Login screen](assets/login.png) | ![Dashboard with workout stats](assets/dashboard.png) |
+| **Log Workout** | **Workout History** |
+| ![Log workout form](assets/logworkout.png) | ![Workout history grouped by session](assets/history.png) |
 
 ## Features
 
