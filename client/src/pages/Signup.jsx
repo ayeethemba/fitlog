@@ -1,7 +1,7 @@
 import api from '../utils/api.js';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import bg from '../assets/landingpage.png';
+import bg from '../assets/landingpage.jpg';
 import Footer from '../components/Footer.jsx';
 import { isTokenValid } from '../utils/auth.js';
 

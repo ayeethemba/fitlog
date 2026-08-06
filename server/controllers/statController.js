@@ -82,4 +82,17 @@ const getStats = async (req, res) => {
     }
 };
 
-module.exports = { getStats, computeStreak };
+const getPrs = async (req, res) => {
+    const id = req.user.id;
+    try {
+        const PRs = await pool.query(`SELECT DISTINCT ON (e.id) e.name, we.weight, we.reps, weight * (1+ reps / 30.0) AS est_one_rm FROM workout_exercises we JOIN workouts w   ON w.id = we.workout_id JOIN exercises e  ON e.id = we.exercise_id WHERE w.user_id = $1 ORDER BY e.id, est_one_rm DESC;`, [id]);
+        res.status(200).json(PRs.rows);
+    } catch (error) {
+        console.error('Trouble getting PRs', error);
+        return res.status(500).json({error: "server error"})
+
+    }
+
+};
+
+module.exports = { getStats, computeStreak, getPrs };
