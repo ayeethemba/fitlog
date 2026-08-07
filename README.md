@@ -95,7 +95,7 @@ cd server
 npm test
 ```
 
-Jest + Supertest cover auth validation, error-message hygiene, the workout transaction (commit and rollback paths), ownership checks, and the streak algorithm. CI runs tests, lint, and a production build on every push via GitHub Actions.
+31 Jest + Supertest tests cover auth validation, error-message hygiene, the workout transaction (commit and rollback paths), ownership checks, the streak algorithm, and the personal-records (estimated 1RM) endpoint. CI runs tests, lint, and a production build on every push via GitHub Actions.
 
 ## Deployment
 
